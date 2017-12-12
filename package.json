@@ -1,0 +1,29 @@
+{
+  "name": "mock-api",
+  "version": "1.0.0",
+  "author": "Marko Arsic",
+  "license": "MIT",
+  "description": "Mock API setup for frontend development",
+  "main": "index.js",
+  "scripts": {
+    "generate-mock-data": "node src/generateMockData",
+    "prestart-mockapi": "npm run generate-mock-data",
+    "start-mockapi": "json-server --watch data/db.json --port 3001",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:marsicdev/rest-mock-api.git"
+  },
+  "dependencies": {
+    "json-schema-faker": "0.4.6",
+    "json-server": "0.12.1"
+  },
+  "keywords": [
+    "javascript",
+    "mock",
+    "API",
+    "json",
+    "server"
+  ]
+}

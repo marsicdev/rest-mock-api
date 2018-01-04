@@ -33,31 +33,35 @@ server.use(middlewares)
 server.use(jsonServer.bodyParser)
 
 // Add custom routes before JSON Server router
-server.post('/api/authenticate', (req, res) => {
-    console.log(req.body);
-    if (req.body) {
-        const { username, password } = req.body;
-        if (username === adminCredentials.username
-            && password === adminCredentials.password) {
+server.route('/api/auth')
+    .get((req, res) => {
+        res.send("Only available for POST")
+    })
+    .post((req, res) => {
+        console.log(req.body);
+        if (req.body) {
+            const { username, password } = req.body;
+            if (username === adminCredentials.username
+                && password === adminCredentials.password) {
 
-            res.status(200)
-                .send(adminUser)
+                res.status(200)
+                    .send(adminUser)
 
+            } else {
+
+                res.status(401)
+                    .send({ error: 'Invalid credentials' })
+            }
         } else {
-
+            // it is not recommended in REST APIs to throw errors,
+            // instead, we send 401 response with whatever erros
+            // we want to expose to the client
             res.status(401)
-                .send({ error: 'Invalid credentials' })
+                .send({ error: 'Unauthorized' })
         }
-    } else {
-        // it is not recommended in REST APIs to throw errors,
-        // instead, we send 401 response with whatever erros
-        // we want to expose to the client
-        res.status(401)
-            .send({ error: 'Unauthorized' })
-    }
-})
+    })
 
-// server.use(simpleAuth)
+server.use(simpleAuth)
 server.use('/api', router)
 
 // start listening to port 3001

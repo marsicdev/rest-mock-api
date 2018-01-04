@@ -23,6 +23,9 @@ To generate new data edit schema in `schema/mockDataSchema.js` according to your
 
 Application endpoints based on `db/db.js` objects and support REST standards.
 
+POST `http://localhost:3001/api/auth`
+GET `http://localhost:3001/api/db` - Using header `Authorization: Bearer FaKeTok3nHeRe`
+
 #### References
 
 This project is using:

@@ -1,7 +1,7 @@
 const adminCredentials = {
     username: "admin",
     password: "root",
-    bearerToken: "Bearer 269GJT8Aj359NxkJW7HXMfcbDX8k"
+    bearerToken: "Bearer FaKeTok3nHeRe"
 }
 
 const adminUser = {
@@ -9,7 +9,7 @@ const adminUser = {
     firstName: "Admin",
     lastName: "User",
     username: "admin.admin",
-    token: "269GJT8Aj359NxkJW7HXMfcbDX8k"
+    token: "FaKeTok3nHeRe"
 }
 
 module.exports = {

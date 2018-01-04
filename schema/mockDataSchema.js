@@ -1,44 +1,6 @@
 var schema = {
   "type": "object",
   "properties": {
-    "therapists": {
-      "type": "array",
-      "minItems": 3,
-      "maxItems": 10,
-      "items": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number",
-            "unique": true,
-            "minimum": 1
-          },
-          "firstName": {
-            "type": "string",
-            "faker": "name.firstName"
-          },
-          "lastName": {
-            "type": "string",
-            "faker": "name.lastName"
-          },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "unique": true,
-            "faker": "internet.email"
-          },
-          "username": {
-            "type": "string",
-            "unique": true,
-            "faker": "internet.userName"
-          },
-          "status": {
-            "type": "boolean"
-          }
-        },
-        "required": ["id", "firstName", "lastName", "email", "username", "status"]
-      }
-    },
     "companies": {
       "type": "array",
       "minItems": 3,

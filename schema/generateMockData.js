@@ -12,7 +12,7 @@ const fakeApiData = jsf(mockDataSchema)
 
 const json = JSON.stringify(fakeApiData)
 
-fs.writeFile("data/db.json", json, function (err) {
+fs.writeFile("db/db.json", json, function (err) {
   if (err) {
     return console.log(err)
   } else {

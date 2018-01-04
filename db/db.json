@@ -1,0 +1,192 @@
+{
+    "admins": [
+        {
+            "id": 111,
+            "facultyId": 48010667,
+            "firstName": "Adita",
+            "lastName": "Mosciski",
+            "email": "a.mosciski@hotmail.com",
+            "phone": "+91 66413615",
+            "username": "a.mosciski"
+        },
+        {
+            "id": 222,
+            "facultyId": 48010667,
+            "firstName": "Ita",
+            "lastName": "Iski",
+            "email": "ciski@hotmail.com",
+            "phone": "+381 (9) 6413615",
+            "username": "sciski.m"
+        },
+        {
+            "id": 223,
+            "facultyId": 89235717,
+            "firstName": "dsaf",
+            "lastName": "sadf",
+            "username": "asdf",
+            "email": "asdfa@asd.com",
+            "phone": "+3811189543"
+        },
+        {
+            "facultyId": 89235719,
+            "firstName": "John",
+            "lastName": "Doe",
+            "username": "john.doe",
+            "email": "john@doe.com",
+            "phone": "+3128312332",
+            "id": 224
+        }
+    ],
+    "professionals": [
+        {
+            "id": 384233,
+            "firstName": "Tod",
+            "lastName": "Nolan",
+            "email": "Aditya.Mosciski@hotmail.com",
+            "username": "Carmella.Kirlin53",
+            "active": true
+        },
+        {
+            "id": 24266644,
+            "firstName": "Bernardo",
+            "lastName": "Mayer",
+            "email": "Laverne_Feest2@gmail.com",
+            "username": "Gavin.Gleichner28",
+            "active": true
+        },
+        {
+            "id": 52065295,
+            "firstName": "Katarina",
+            "lastName": "Runolfsdottir",
+            "email": "Saul_Cassin75@hotmail.com",
+            "username": "Herminia61",
+            "active": false
+        }
+    ],
+    "faculties": [
+        {
+            "id": 89235715,
+            "name": "Awesome Company",
+            "email": "Janie_Fay@yahoo.com",
+            "address": "779 Nader Streets",
+            "active": false
+        },
+        {
+            "id": 48010667,
+            "name": "Evel Corp",
+            "email": "Victor_Muller@yahoo.com",
+            "address": "1041 Bettie Port",
+            "active": true
+        },
+        {
+            "id": 22414862,
+            "name": "German Company",
+            "email": "Alexandro61@yahoo.com",
+            "address": "344 Charles Mountains",
+            "active": true
+        },
+        {
+            "id": 89235716,
+            "name": "My Code Company",
+            "email": "mycomp@mycom.com",
+            "address": "Bulevar Arsenija Carnojevica",
+            "active": true
+        },
+        {
+            "id": 89235717,
+            "name": "Codebehind",
+            "email": "bla@bla.mail",
+            "address": "Simple addres",
+            "active": true
+        },
+        {
+            "id": 89235718,
+            "name": "dsaf",
+            "email": "asdfa@asd.com",
+            "address": "sadasdaf sf ad",
+            "active": false
+        },
+        {
+            "id": 89235719,
+            "name": "NewCorp",
+            "email": "new@corp.com",
+            "address": "Bla bla address",
+            "active": false
+        },
+        {
+            "id": 89235721,
+            "active": false,
+            "name": "OldCorp",
+            "email": "old@corp.com",
+            "address": "33st btw 6th and 7th"
+        }
+    ],
+    "students": [
+        {
+            "id": 89823686,
+            "facultyId": 89235715,
+            "username": "Brandyn71",
+            "active": false
+        },
+        {
+            "id": 65054791,
+            "facultyId": 89235715,
+            "username": "Austen_Cremin72",
+            "active": false
+        },
+        {
+            "id": 74435335,
+            "facultyId": 22414862,
+            "username": "Paris52",
+            "active": true
+        },
+        {
+            "id": 89823687,
+            "facultyId": 89235716,
+            "username": "milance",
+            "active": false
+        },
+        {
+            "id": 89823688,
+            "facultyId": 48010667,
+            "active": true,
+            "username": "myrandom_username"
+        },
+        {
+            "id": 89823689,
+            "facultyId": 22414862,
+            "username": "this_is_username",
+            "active": true
+        },
+        {
+            "id": 89823690,
+            "facultyId": 22414862,
+            "username": "new_user",
+            "active": true
+        }
+    ],
+    "sessions": [
+        {
+            "id": 79557227,
+            "professionalId": 24266644,
+            "facultyId": 89235715,
+            "studentId": 89823686,
+            "duration": 11454,
+            "createDateTime": "Sun Dec 24 2017 16:12:34 GMT+0100 (CET)",
+            "startDateTime": "Mon Dec 25 2017 07:22:13 GMT+0100 (CET)",
+            "endDateTime": "Sun Dec 24 2017 20:42:48 GMT+0100 (CET)",
+            "active": false
+        },
+        {
+            "id": 80003527,
+            "professionalId": 52065295,
+            "facultyId": 22414862,
+            "studentId": 74435335,
+            "duration": 43276,
+            "createDateTime": "Mon Dec 25 2017 04:15:36 GMT+0100 (CET)",
+            "startDateTime": "Sun Dec 24 2017 16:51:43 GMT+0100 (CET)",
+            "endDateTime": "Mon Dec 25 2017 00:47:59 GMT+0100 (CET)",
+            "active": true
+        }
+    ]
+}

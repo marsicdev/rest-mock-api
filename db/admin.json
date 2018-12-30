@@ -1,0 +1,17 @@
+{
+    "users": [
+        {
+            "name": "MyName",
+            "email": "dev2@dev.com",
+            "passwordHash": "$2b$10$2sSurtgPtphFKQcrmSoDWOxzsa3eq4bj/CoZSIY47KX46.iCzd4Dm",
+            "enabled": false,
+            "id": "PKaBdzMKo"
+        }
+    ],
+    "keys": [
+        {
+            "id": 1,
+            "key": "B1tD3V"
+        }
+    ]
+}

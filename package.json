@@ -1,24 +1,43 @@
 {
-  "name": "rest-mock-api",
-  "version": "1.0.0",
-  "author": "Marko Arsic",
-  "license": "MIT",
-  "description": "Mock API setup for frontend development",
-  "main": "src/server.js.js",
-  "scripts": {
-    "start": "nodemon src/server.js",
-    "generate-mock-data": "node schema/generateMockData"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:marsicdev/rest-mock-api.git"
-  },
-  "dependencies": {
-    "json-schema-faker": "0.4.6",
-    "json-server": "0.12.1",
-    "express": "^4.16.2"
-  },
-  "devDependencies": {
-    "nodemon": "^1.14.3"
-  }
+    "name": "rest-mock-api",
+    "version": "1.0.0",
+    "author": "Marko Arsic",
+    "license": "MIT",
+    "description": "Mock API setup for frontend development",
+    "main": "src/server.js",
+    "scripts": {
+        "start": "nodemon ./bootstrap.js",
+        "precommit": "pretty-quick --staged",
+        "reset": "rm -rf node_modules/ && npm prune && yarn cache clean && yarn",
+        "generate-mock-data": "node schema/generateMockData"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:marsicdev/rest-mock-api.git"
+    },
+    "dependencies": {
+        "bcrypt": "^3.0.3",
+        "express": "^4.16.4",
+        "json-schema-faker": "0.5.0-rc16",
+        "json-server": "0.14.2",
+        "jsonwebtoken": "^8.4.0",
+        "lowdb": "^1.0.0",
+        "shortid": "^2.2.14"
+    },
+    "devDependencies": {
+        "babel-cli": "6.26.0",
+        "babel-preset-env": "1.7.0",
+        "eslint": "5.11.1",
+        "eslint-config-standard": "12.0.0",
+        "eslint-plugin-import": "2.14.0",
+        "eslint-plugin-jest": "22.1.2",
+        "eslint-plugin-node": "8.0.0",
+        "eslint-plugin-promise": "4.0.1",
+        "eslint-plugin-standard": "4.0.0",
+        "faker": "^4.1.0",
+        "husky": "^1.3.1",
+        "nodemon": "1.18.9",
+        "prettier": "^1.15.3",
+        "pretty-quick": "^1.8.0"
+    }
 }

@@ -1,7 +1,9 @@
 import jsonServer from 'json-server'
-import { setupRoutes } from './routes'
-import simpleAuth from './lib/middleware/simpleAuth'
+
+import postAuth from './lib/middleware/postAuth'
 import apiKeyAuth from './lib/middleware/apiKeyAuth'
+
+import { setupRoutes } from './routes'
 
 const server = jsonServer.create()
 const router = jsonServer.router('db/full-db.json')
@@ -18,7 +20,7 @@ server.use(jsonServer.bodyParser)
 setupRoutes(server)
 
 server.use(apiKeyAuth)
-server.use(simpleAuth)
+server.use(postAuth)
 server.use('/api', router)
 
 /** Default route handler */
@@ -29,12 +31,6 @@ server.use((req, res, next) => {
 })
 
 export const errorHandler = (err, req, res, next) => {
-    if (err.isServer) {
-        // log the error...
-        // probably you don't want to log unauthorized access
-        // or do you?
-    }
-
     if (err.isBoom) {
         res.status(err.output.statusCode).json(err.output.payload)
     } else {

@@ -1,6 +1,23 @@
+import { db } from '../services/database'
+
 export default ({ headers }, res, next) => {
     const apiKey = headers['x-api-key']
-    if (apiKey === 'BlaBla') {
+
+    if (!apiKey) {
+        const status = 401
+        const message = 'Invalid auth header'
+        res.status(status).json({ status, message })
+        return
+    }
+
+    // Find key in DB
+    const { key } = db
+        .get('keys')
+        .find({ key: apiKey })
+        .value()
+
+    // Validate key
+    if (key && key === apiKey) {
         next()
         return
     }

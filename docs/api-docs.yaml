@@ -11,31 +11,75 @@ info:
 host: 'localhost:3001'
 basePath: '/api'
 tags:
-    - name: Posts
+    - name: posts
       description: All blog posts
-    - name: Comments
-      description: Blog post comments
-    - name: Users
-      description: All blog post Authors
-    - name: Albums
-      description: All albums
-    - name: Admin
-      description: System administration API
+    - name: comments
+      description: Post comments
+    - name: users
+      description: All Authors
+    - name: albums
+      description: All Albums
+    - name: photos
+      description: Photos in Albums
 security:
     - apiKey: []
 paths:
     /posts:
+        parameters:
+            - name: userId
+              in: query
+              description: Fetch posts for specific User
+              schema:
+                  type: integer
+            - name: _limit
+              in: query
+              description: The numbers of items to return.
+              schema:
+                  type: integer
+            - name: _page
+              in: query
+              description: >-
+                  Use `_page` and optionally `_limit` to paginate returned data. 
+                  In the Link header you'll get `first`, `prev`, `next` and `last` links.
+                  10 items are returned by default.
+              schema:
+                  type: integer
+            - name: _embed
+              in: query
+              description: To include children resources
+              schema:
+                  type: string
+            - name: _expand
+              in: query
+              description: To include parent resources
+              schema:
+                  type: string
+            - name: q
+              in: query
+              description: Full-text search
+              schema:
+                  type: string
         get:
             tags:
-                - Posts
-            summary: Get all posts in system
+                - posts
+            summary: List all Posts in the system
             responses:
                 '200':
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Posts'
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Post'
+                    headers:
+                        X-Total-Count:
+                            type: integer
+                            format: int32
+                            description: total count of items when pagination with `_page` is used
+                        Link:
+                            type: string
+                            description: first, prev, next and last links for pagination
                 '401':
                     $ref: '#/components/responses/Unauthorized'
                 '404':
@@ -52,24 +96,679 @@ paths:
             - name: postId
               in: path
               required: true
-              description: ID of post that we want to get
+              description: Single post id
+              schema:
+                  type: string
+            - name: _embed
+              in: query
+              description: To include children resources
+              schema:
+                  type: string
+            - name: _expand
+              in: query
+              description: To include parent resources
               schema:
                   type: string
         get:
             tags:
-                - Posts
-            summary: Get post with given ID
+                - posts
+            summary: Single Post details
             security:
                 - apiKey: []
             responses:
                 '200':
-                    description: Successful operation. Post is found
+                    description: OK. Successful operation.
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Post'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                # Definition of all error statuses
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /posts/{postId}/comments:
+        parameters:
+            - name: postId
+              in: path
+              required: true
+              description: ID of Post that you need comments
+              schema:
+                  type: string
+            - name: _limit
+              in: query
+              description: The numbers of items to return.
+              schema:
+                  type: integer
+            - name: _page
+              in: query
+              description: >-
+                  Use `_page` and optionally `_limit` to paginate returned data. 
+                  In the Link header you'll get `first`, `prev`, `next` and `last` links.
+                  10 items are returned by default.
+              schema:
+                  type: integer
+        get:
+            tags:
+                - posts
+            summary: List all Comments for a single Post
+            security:
+                - apiKey: []
+            responses:
+                '200':
+                    description: Ok. Successful operation.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Comment'
+                    headers:
+                        X-Total-Count:
+                            type: integer
+                            format: int32
+                            description: total count of items when pagination with `_page` is used
+                        Link:
+                            type: string
+                            description: first, prev, next and last links for pagination
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                # Definition of all error statuses
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /comments:
+        parameters:
+            - name: postId
+              in: query
+              description: To get list of Comments for specific Post
+              schema:
+                  type: integer
+            - name: _limit
+              in: query
+              description: The numbers of items to return.
+              schema:
+                  type: integer
+            - name: _page
+              in: query
+              description: >-
+                  Use `_page` and optionally `_limit` to paginate returned data. 
+                  In the Link header you'll get `first`, `prev`, `next` and `last` links.
+                  10 items are returned by default.
+              schema:
+                  type: integer
+            - name: _embed
+              in: query
+              description: To include children resources
+              schema:
+                  type: string
+            - name: _expand
+              in: query
+              description: To include parent resources
+              schema:
+                  type: string
+            - name: q
+              in: query
+              description: Full-text search
+              schema:
+                  type: string
+        get:
+            tags:
+                - comments
+            summary: List all Comments in the system
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Comment'
+                    headers:
+                        X-Total-Count:
+                            type: integer
+                            format: int32
+                            description: total count of items when pagination with `_page` is used
+                        Link:
+                            type: string
+                            description: first, prev, next and last links for pagination
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                # Definition of all error statuses
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /comments/{commentId}:
+        parameters:
+            - name: commentId
+              in: path
+              description: ID of the single Comment
+              schema:
+                  type: integer
+            - name: _expand
+              in: query
+              description: To include parent resources
+              schema:
+                  type: string
+        get:
+            tags:
+                - comments
+            summary: Single Comment details
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Comment'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                # Definition of all error statuses
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /users:
+        parameters:
+            - name: _limit
+              in: query
+              description: The numbers of items to return
+              schema:
+                  type: integer
+            - name: _page
+              in: query
+              description: >-
+                  Use `_page` and optionally `_limit` to paginate returned data. 
+                  In the Link header you'll get `first`, `prev`, `next` and `last` links.
+                  10 items are returned by default.
+              schema:
+                  type: integer
+            - name: _embed
+              in: query
+              description: To include children resources
+              schema:
+                  type: string
+            - name: _expand
+              in: query
+              description: To include parent resources
+              schema:
+                  type: string
+            - name: q
+              in: query
+              description: Full-text search
+              schema:
+                  type: string
+        get:
+            tags:
+                - users
+            summary: List all Users in the system
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/User'
+                    headers:
+                        X-Total-Count:
+                            type: integer
+                            format: int32
+                            description: total count of items when pagination with `_page` is used
+                        Link:
+                            type: string
+                            description: first, prev, next and last links for pagination
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                # Definition of all error statuses
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /users/{userId}:
+        parameters:
+            - name: userId
+              in: path
+              required: true
+              description: ID of user that you want to get
+              schema:
+                  type: string
+            - name: _embed
+              in: query
+              description: To include children resources
+              schema:
+                  type: string
+        get:
+            tags:
+                - users
+            summary: Single User details
+            responses:
+                '200':
+                    description: OK. Successful operation.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                # Definition of all error statuses
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /users/{userId}/posts:
+        parameters:
+            - name: userId
+              in: path
+              required: true
+              description: ID of user that you want to get
+              schema:
+                  type: string
+            - name: _limit
+              in: query
+              description: The numbers of items to return.
+              schema:
+                  type: integer
+            - name: _page
+              in: query
+              description: >-
+                  Use `_page` and optionally `_limit` to paginate returned data. 
+                  In the Link header you'll get `first`, `prev`, `next` and `last` links.
+                  10 items are returned by default.
+              schema:
+                  type: integer
+            - name: _embed
+              in: query
+              description: To include children resources
+              schema:
+                  type: string
+            - name: _expand
+              in: query
+              description: To include parent resources
+              schema:
+                  type: string
+            - name: q
+              in: query
+              description: Full-text search
+              schema:
+                  type: string
+        get:
+            tags:
+                - users
+            summary: List all Posts for a specific User
+            responses:
+                '200':
+                    description: OK. Successful operation.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Post'
+                    headers:
+                        X-Total-Count:
+                            type: integer
+                            format: int32
+                            description: total count of items when pagination with `_page` is used
+                        Link:
+                            type: string
+                            description: first, prev, next and last links for pagination
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                # Definition of all error statuses
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /users/{userId}/albums:
+        parameters:
+            - name: userId
+              in: path
+              required: true
+              description: ID of user that you want to get
+              schema:
+                  type: string
+            - name: _limit
+              in: query
+              description: The numbers of items to return.
+              schema:
+                  type: integer
+            - name: _page
+              in: query
+              description: >-
+                  Use `_page` and optionally `_limit` to paginate returned data. 
+                  In the Link header you'll get `first`, `prev`, `next` and `last` links.
+                  10 items are returned by default.
+              schema:
+                  type: integer
+            - name: _embed
+              in: query
+              description: To include children resources
+              schema:
+                  type: string
+            - name: _expand
+              in: query
+              description: To include parent resources
+              schema:
+                  type: string
+            - name: q
+              in: query
+              description: Full-text search
+              schema:
+                  type: string
+        get:
+            tags:
+                - users
+            summary: List all Albums for a specific User
+            responses:
+                '200':
+                    description: OK. Successful operation.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Album'
+                    headers:
+                        X-Total-Count:
+                            type: integer
+                            format: int32
+                            description: total count of items when pagination with `_page` is used
+                        Link:
+                            type: string
+                            description: first, prev, next and last links for pagination
                 '400':
                     description: Invalid ID supplied
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                # Definition of all error statuses
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /users/{userId}/todos:
+        parameters:
+            - name: userId
+              in: path
+              required: true
+              description: ID of user that you want to get Todo item
+              schema:
+                  type: string
+            - name: _limit
+              in: query
+              description: The numbers of items to return.
+              schema:
+                  type: integer
+            - name: _page
+              in: query
+              description: >-
+                  Use `_page` and optionally `_limit` to paginate returned data. 
+                  In the Link header you'll get `first`, `prev`, `next` and `last` links.
+                  10 items are returned by default.
+              schema:
+                  type: integer
+            - name: _embed
+              in: query
+              description: To include children resources
+              schema:
+                  type: string
+            - name: _expand
+              in: query
+              description: To include parent resources
+              schema:
+                  type: string
+            - name: q
+              in: query
+              description: Full-text search
+              schema:
+                  type: string
+        get:
+            tags:
+                - users
+            summary: List all Todo's items for a specific User
+            responses:
+                '200':
+                    description: OK. Successful operation.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Todo'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                # Definition of all error statuses
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                    headers:
+                        X-Total-Count:
+                            type: integer
+                            format: int32
+                            description: total count of items when pagination with `_page` is used
+                        Link:
+                            type: string
+                            description: first, prev, next and last links for pagination
+    /albums:
+        parameters:
+            - name: userId
+              in: query
+              required: false
+              description: ID of user that you want to get albums for
+              schema:
+                  type: string
+            - name: _limit
+              in: query
+              description: The numbers of items to return.
+              schema:
+                  type: integer
+            - name: _page
+              in: query
+              description: >-
+                  Use `_page` and optionally `_limit` to paginate returned data. 
+                  In the Link header you'll get `first`, `prev`, `next` and `last` links.
+                  10 items are returned by default.
+              schema:
+                  type: integer
+            - name: _expand
+              in: query
+              description: To include parent resources
+              schema:
+                  type: string
+        get:
+            tags:
+                - albums
+            summary: List all Albums in the system
+            responses:
+                '200':
+                    description: OK. Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Album'
+                    headers:
+                        X-Total-Count:
+                            type: integer
+                            format: int32
+                            description: total count of items when pagination with `_page` is used
+                        Link:
+                            type: string
+                            description: first, prev, next and last links for pagination
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                # Definition of all error statuses
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /albums/{albumId}:
+        parameters:
+            - name: albumId
+              in: path
+              required: true
+              description: ID of Album that you want to get
+              schema:
+                  type: string
+            - name: _embed
+              in: query
+              description: To include children resources
+              schema:
+                  type: string
+            - name: _expand
+              in: query
+              description: To include parent resources
+              schema:
+                  type: string
+        get:
+            tags:
+                - albums
+            summary: Single Album details
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Album'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                # Definition of all error statuses
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /albums/{albumId}/photos:
+        parameters:
+            - name: _limit
+              in: query
+              description: The numbers of items to return.
+              schema:
+                  type: integer
+            - name: _page
+              in: query
+              description: >-
+                  Use `_page` and optionally `_limit` to paginate returned data. 
+                  In the Link header you'll get `first`, `prev`, `next` and `last` links.
+                  10 items are returned by default.
+              schema:
+                  type: integer
+        get:
+            tags:
+                - albums
+            summary: List all Photos for a specific Album
+            responses:
+                '200':
+                    description: OK. Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Photo'
+                    headers:
+                        X-Total-Count:
+                            type: integer
+                            format: int32
+                            description: total count of items when pagination with `_page` is used
+                        Link:
+                            type: string
+                            description: first, prev, next and last links for pagination
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                # Definition of all error statuses
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /photos:
+        parameters:
+            - name: albumId
+              in: query
+              required: true
+              description: ID of Album that you want to get photos for
+              schema:
+                  type: string
+            - name: _expand
+              in: query
+              description: To include parent resources
+              schema:
+                  type: string
+        get:
+            tags:
+                - photos
+            summary: List all Photos in the system
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Photo'
+                    headers:
+                        X-Total-Count:
+                            type: integer
+                            format: int32
+                            description: total count of items when pagination with `_page` is used
+                        Link:
+                            type: string
+                            description: first, prev, next and last links for pagination
                 '401':
                     $ref: '#/components/responses/Unauthorized'
                 '404':
@@ -123,7 +822,7 @@ components:
                 - userId
                 - title
                 - body
-        Author:
+        User:
             properties:
                 id:
                     type: string
@@ -163,10 +862,52 @@ components:
                 - name
                 - email
                 - body
-        Posts:
-            type: array
-            items:
-                $ref: '#/components/schemas/Post'
+        Album:
+            properties:
+                id:
+                    type: string
+                    uniqueItems: true
+                userId:
+                    type: string
+                title:
+                    type: string
+            required:
+                - userId
+                - title
+        Photo:
+            properties:
+                id:
+                    type: string
+                    uniqueItems: true
+                albumId:
+                    type: string
+                title:
+                    type: string
+                url:
+                    type: string
+                thumbnailUrl:
+                    type: string
+            required:
+                - albumId
+                - title
+                - url
+                - thumbnailUrl
+        Todo:
+            properties:
+                id:
+                    type: string
+                    uniqueItems: true
+                userId:
+                    type: string
+                title:
+                    type: string
+                completed:
+                    type: boolean
+            required:
+                - albumId
+                - title
+                - url
+                - thumbnailUrl
         # Schema for error response body
         Error:
             type: object

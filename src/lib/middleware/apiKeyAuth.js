@@ -11,13 +11,13 @@ export default ({ headers }, res, next) => {
     }
 
     // Find key in DB
-    const { key } = db
+    const keyObj = db
         .get('keys')
         .find({ key: apiKey })
         .value()
 
     // Validate key
-    if (key && key === apiKey) {
+    if (keyObj && keyObj.key === apiKey) {
         next()
         return
     }

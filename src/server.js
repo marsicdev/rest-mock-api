@@ -1,9 +1,13 @@
 import jsonServer from 'json-server'
+import swaggerUi from 'swagger-ui-express'
+import YAML from 'yamljs'
 
 import postAuth from './lib/middleware/postAuth'
 import apiKeyAuth from './lib/middleware/apiKeyAuth'
 
 import { setupRoutes } from './routes'
+
+const swaggerDocument = YAML.load('./api-docs.yaml')
 
 const server = jsonServer.create()
 const router = jsonServer.router('db/full-db.json')
@@ -19,6 +23,10 @@ server.use(jsonServer.bodyParser)
 // Add custom routes before JSON Server router
 setupRoutes(server)
 
+// API documentation
+server.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+
+// API key auth
 server.use(apiKeyAuth)
 server.use(postAuth)
 server.use('/api', router)

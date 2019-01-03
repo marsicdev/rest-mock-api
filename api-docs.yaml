@@ -1,0 +1,183 @@
+openapi: 3.0.0
+info:
+    version: 1.0.0
+    title: BIT Blog Application API
+    description: >-
+        BIT Node.js Blog Application API. You will need the api key `special-key` to
+        test the authorization filters.
+    license:
+        name: MIT
+        url: 'https: //opensource.org/licenses/MIT'
+host: 'localhost:3001'
+basePath: '/api'
+tags:
+    - name: Posts
+      description: All blog posts
+    - name: Comments
+      description: Blog post comments
+    - name: Users
+      description: All blog post Authors
+    - name: Albums
+      description: All albums
+    - name: Admin
+      description: System administration API
+security:
+    - apiKey: []
+paths:
+    /posts:
+        get:
+            tags:
+                - Posts
+            summary: Get all posts in system
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Posts'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                # Definition of all error statuses
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /posts/{postId}:
+        parameters:
+            - name: postId
+              in: path
+              required: true
+              description: ID of post that we want to get
+              schema:
+                  type: string
+        get:
+            tags:
+                - Posts
+            summary: Get post with given ID
+            security:
+                - apiKey: []
+            responses:
+                '200':
+                    description: Successful operation. Post is found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Post'
+                '400':
+                    description: Invalid ID supplied
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                # Definition of all error statuses
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+servers:
+    - url: 'http://localhost:3001/api'
+    - url: 'https://localhost:3001/api'
+components:
+    securitySchemes:
+        apiKey:
+            type: apiKey
+            in: header
+            name: x-api-key
+        bearerAuth: # arbitrary name for the security scheme
+            type: http
+            scheme: bearer
+            bearerFormat: JWT # optional, arbitrary value for documentation purposes
+    responses:
+        NotFound:
+            description: The specified resource was not found
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+        Unauthorized:
+            description: Unauthorized
+            content:
+                application/json:
+                    schema:
+                        $ref: '#/components/schemas/Error'
+    schemas:
+        Post:
+            properties:
+                id:
+                    type: string
+                    uniqueItems: true
+                userId:
+                    type: string
+                title:
+                    type: string
+                body:
+                    type: string
+            required:
+                - userId
+                - title
+                - body
+        Author:
+            properties:
+                id:
+                    type: string
+                    uniqueItems: true
+                name:
+                    type: string
+                username:
+                    type: string
+                email:
+                    uniqueItems: true
+                    type: string
+                phone:
+                    type: string
+                website:
+                    type: string
+            required:
+                - name
+                - username
+                - email
+                - phone
+                - website
+        Comment:
+            properties:
+                id:
+                    type: string
+                    uniqueItems: true
+                postId:
+                    type: string
+                email:
+                    type: string
+                name:
+                    type: string
+                body:
+                    type: string
+            required:
+                - postId
+                - name
+                - email
+                - body
+        Posts:
+            type: array
+            items:
+                $ref: '#/components/schemas/Post'
+        # Schema for error response body
+        Error:
+            type: object
+            properties:
+                status:
+                    type: integer
+                code:
+                    type: string
+                message:
+                    type: string
+            required:
+                - code
+                - status
+                - message

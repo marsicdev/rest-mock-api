@@ -7,7 +7,7 @@ import apiKeyAuth from './lib/middleware/apiKeyAuth'
 
 import { setupRoutes } from './routes'
 
-const swaggerDocument = YAML.load('./api-docs.yaml')
+const swaggerDocument = YAML.load('./docs/api-docs.yaml')
 
 const server = jsonServer.create()
 const router = jsonServer.router('db/full-db.json')

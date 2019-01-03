@@ -1,10 +1,11 @@
 openapi: 3.0.0
 info:
     version: 1.0.0
-    title: BIT Blog Application API
+    title: BIT Blog API
     description: >-
-        BIT Node.js Blog Application API. You will need the api key `special-key` to
-        test the authorization filters.
+        BIT Blog API is Node.js application using [json-server](https://github.com/typicode/json-server) with custom auth layer. 
+        To access to `GET` routes you will need an API KEY from the server administrator. 
+        When you get the API KEY you will need to encode it as `Base64` and send it as encoded string in `x-api-key` header with each request.
     license:
         name: MIT
         url: 'https: //opensource.org/licenses/MIT'
@@ -23,6 +24,9 @@ tags:
       description: Photos in Albums
 security:
     - apiKey: []
+servers:
+    - url: 'http://localhost:3001/api'
+    - url: 'https://jsonplaceholder.typicode.com'
 paths:
     /posts:
         parameters:
@@ -780,9 +784,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
-servers:
-    - url: 'http://localhost:3001/api'
-    - url: 'https://localhost:3001/api'
 components:
     securitySchemes:
         apiKey:
